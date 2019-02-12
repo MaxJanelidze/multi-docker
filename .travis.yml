@@ -2,6 +2,9 @@ sudo: required
 services:
   - docker
 
+notifications:
+  email: false
+
 before_install:
   - docker build -t kvaksa/docker-react -f ./client/Dockerfile.dev ./client
 
