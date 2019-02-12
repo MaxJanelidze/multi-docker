@@ -1,0 +1,23 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t kvaksa/docker-react -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run kvaksa/docker-react npm run test -- --coverage
+
+after_success:
+  # Build images
+  - docker build -t kvaksa/multi-client ./client
+  - docker build -t kvaksa/multi-server ./server
+  - docker build -t kvaksa/multi-worker ./worker
+  - docker build -t kvaksa/multi-nginx ./nginx
+  # Log in in docker cli
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Push images to docker hub
+  - docker push kvaksa/multi-client
+  - docker push kvaksa/multi-server
+  - docker push kvaksa/multi-worker
+  - docker push kvaksa/multi-nginx
