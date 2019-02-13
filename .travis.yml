@@ -14,7 +14,7 @@ script:
 after_success:
   # Build images
   - docker build -t kvaksa/multi-client ./client
-  - docker build -t kvaksa/multi-server ./server
+  - docker build -t kvaksa/multi-server ./api
   - docker build -t kvaksa/multi-worker ./worker
   - docker build -t kvaksa/multi-nginx ./nginx
   # Log in in docker cli
